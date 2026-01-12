@@ -76,10 +76,37 @@ const deleteUser=async(req,res)=>{
     }
 }
 
+const getOrders=async(req,res)=>{
+  try {
+    const result = await userService.getOrders({
+      search: req.query.search,
+      status: req.query.status,
+      minAmount: req.query.minAmount,
+      maxAmount: req.query.maxAmount,
+      fromDate: req.query.fromDate,
+      toDate: req.query.toDate,
+      orderBy: req.query.orderBy,
+      orderDir: req.query.orderDir,
+      page: Number(req.query.page),
+      limit: Number(req.query.limit)
+    })
+
+    res.status(200).json({
+      status: 200,
+      total: result.total,
+      data: result.data
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({message:"Internal server error"})
+  }
+}
+
 module.exports = {
   createUser,
   updateUser,
   getUserList,
   getUserView,
-  deleteUser
+  deleteUser,
+  getOrders
 }
