@@ -18,7 +18,7 @@ if (cluster.isPrimary) {
   }
 
   cluster.on('exit', (worker) => {
-    customLog(`Worker ${worker.process.pid} died. Restarting...`)
+    // customLog(`Worker ${worker.process.pid} died. Restarting...`)
     cluster.fork()
   })
 
