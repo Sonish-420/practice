@@ -5,11 +5,18 @@ export const ProfitMarginApi = async (req, res) => {
     const params = {
       startDate: req.body.startDate,
       endDate: req.body.endDate,
-      limit: req.body.limit,
-      page: req.body.page,
-      search: req.body.search,
-      Customer: req.body.Customer,
-      ItemName: req.body.ItemName,
+      limit: Number(req.body.limit) || 20,
+      page: Number(req.body.page) || 1,
+      search: req.body.search ?? null,
+
+      // ✅ array -> comma string (match SQL param name)
+      Customer: Array.isArray(req.body.Customer)
+        ? req.body.Customer.join(',')
+        : req.body.Customer ?? null,
+
+      ItemName: Array.isArray(req.body.ItemName)
+        ? req.body.ItemName.join(',')
+        : req.body.ItemName ?? null,
     }
 
     const result = await new ProfitMarginStoreProService().getList(params)
