@@ -9,10 +9,13 @@ function convertArraysToString(obj) {
 }
 
 export class ProfitMarginStoreProService {
-  async getList(params) {
+  static async getList(params) {
     return await sqlBuilder.execute(
       'fetch_profit_margin',
       convertArraysToString(params) // ✅ pass directly
     )
   }
+static async getFilterList() {
+  return await sqlBuilder.execute('Profit_margin_api_filters')
+}
 }

@@ -19,13 +19,48 @@ export const ProfitMarginApi = async (req, res) => {
         : req.body.ItemName ?? null,
     }
 
-    const result = await new ProfitMarginStoreProService().getList(params)
+        const result = await ProfitMarginStoreProService.getList(params)
+        
+       const totalRows = result.recordsets[0][0]?.totalRows || 0
+        const data = result.recordsets[1] || []
 
-    res.status(200).json(result)
+        const page = params.page
+        const limit = params.limit
+        const totalPages = Math.ceil(totalRows / limit)
+
+        res.status(200).json({
+        message: '✅ Profit margin fetched',
+        totalRows,
+        totalPages,
+        page,
+        limit,
+        data,
+        })
+
   } catch (err) {
     console.log(err)
     res.status(500).json({
       message: '❌ Profit margin fetch failed',
+      error: err.message,
+    })
+  }
+}
+
+export const ProfitMarginFilterApi = async (req, res) => {
+  try {
+    const result = await ProfitMarginStoreProService.getFilterList()
+    const customers = result.recordsets[0] || []
+    const items = result.recordsets[1] || []
+
+    res.status(200).json({
+      message: '✅ Profit margin filters fetched',
+      customers,
+      items,
+    })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({
+      message: '❌ Profit margin filters fetch failed',
       error: err.message,
     })
   }

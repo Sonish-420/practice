@@ -23,7 +23,7 @@ export class sqlBuilder {
       })
 
       const result = await request.execute(`dbo.${spName}`)
-      return result.recordset
+      return result
     } catch (err) {
       console.log("❌ SQL Builder Error:", err)
       throw err
